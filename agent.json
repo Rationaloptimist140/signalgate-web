@@ -1,0 +1,60 @@
+{
+  "name": "SignalGate Sentiment Agent",
+  "version": "2.0.0",
+  "description": "Real-time crypto market sentiment analysis for BTC, ETH, and SOL. Powered by Gemini AI. Pay per call via x402 on Base.",
+  "url": "https://signalgate-web.vercel.app",
+  "category": "finance",
+  "tags": ["crypto", "sentiment", "trading", "BTC", "ETH", "SOL", "AI", "signals"],
+  "endpoints": [
+    {
+      "path": "/api/sentiment-x402",
+      "method": "GET",
+      "description": "Get real-time AI sentiment for a crypto ticker",
+      "payment": {
+        "protocol": "x402",
+        "network": "base",
+        "price": "0.05",
+        "currency": "USDC",
+        "per": "call"
+      },
+      "parameters": [
+        {
+          "name": "symbol",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "enum": ["BTC", "ETH", "SOL"],
+          "description": "Crypto ticker symbol"
+        }
+      ],
+      "response": {
+        "ticker": "string",
+        "sentiment": "bullish | bearish | neutral",
+        "score": "number (-100 to 100)",
+        "confidence": "number (0 to 100)",
+        "thesis": "string",
+        "signals": "string[]",
+        "timeframe": "short-term | medium-term | long-term",
+        "timestamp": "ISO8601"
+      }
+    },
+    {
+      "path": "/api/sentiment",
+      "method": "GET",
+      "description": "Get real-time AI sentiment (API key auth)",
+      "payment": {
+        "protocol": "api-key",
+        "header": "x-api-key",
+        "format": "sg_live_*"
+      }
+    }
+  ],
+  "pricing": {
+    "x402": "$0.05 USDC per call on Base (no signup)",
+    "api_key": "Contact for subscription pricing"
+  },
+  "contact": {
+    "website": "https://signalgate-web.vercel.app",
+    "github": "https://github.com/Rationaloptimist140/signalgate-web"
+  }
+}
