@@ -1,6 +1,13 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { VertexAI } from '@google-cloud/vertexai';
 
 const VALID_TICKERS = ["BTC", "SOL", "ETH"];
+
+const vertex = new VertexAI({
+  project: process.env.GOOGLE_PROJECT_ID || 'signalgate-live',
+  location: 'us-central1',
+});
+
+const model = vertex.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 function validateApiKey(req) {
   const authHeader = req.headers["authorization"];
@@ -46,15 +53,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `Unsupported ticker: ${ticker}. Supported: ${VALID_TICKERS.join(", ")}` });
   }
 
-  const geminiKey = process.env.GEMINI_API_KEY;
-  if (!geminiKey) {
-    return res.status(500).json({ error: "Server misconfiguration: GEMINI_API_KEY not set" });
-  }
-
   try {
-    const genAI = new GoogleGenerativeAI(geminiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
     const prompt = `You are a crypto market sentiment analyst. Analyze the current market sentiment for ${ticker} (${tickerFullName(ticker)}).
 
 Return a JSON object with exactly these fields:
@@ -69,15 +68,27 @@ Return a JSON object with exactly these fields:
   "timestamp": "${new Date().toISOString()}"
 }
 
-Base your analysis on recent price action, macro crypto conditions, on-chain metrics, and technical patterns.
+Base your analysis on:
+- Recent price action trends for ${ticker}
+- Macro crypto market conditions
+- On-chain metrics and network activity
+- Institutional and retail sentiment indicators
+- Technical analysis patterns
+
 Return ONLY the JSON object, no markdown, no explanation.`;
 
     const result = await model.generateContent(prompt);
-    const text = result.response.text().trim();
+    const text = result.response.candidates[0].content.parts[0].text.trim();
     const clean = text.replace(/^```json\n?/, "").replace(/\n?```$/, "").trim();
     const data = JSON.parse(clean);
 
-    return res.status(200).json({ success: true, data, powered_by: "Gemini 2.0 Flash", version: "1.0.0" });
+    return res.status(200).json({
+      success: true,
+      data,
+      powered_by: "Gemini 1.5 Flash via Vertex AI",
+      version: "1.0.0"
+    });
+
   } catch (err) {
     console.error("Sentiment error:", err);
     return res.status(500).json({ error: "Failed to generate sentiment", details: err.message });
