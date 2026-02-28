@@ -1,7 +1,7 @@
 import { paymentMiddleware } from 'x402-next';
 
 // Your Base wallet address - receives USDC payments directly
-const SELLER_WALLET = process.env.SELLER_WALLET_ADDRESS || '0x0000000000000000000000000000000000000000';
+const SELLER_WALLET = '0x65F204B928a32806FCb364cB8d36B49b647c9f30';
 
 export const middleware = paymentMiddleware(
   SELLER_WALLET,
