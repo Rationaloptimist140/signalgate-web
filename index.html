@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalGate | AI Agent Crypto Sentiment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="max-w-3xl w-full space-y-8 text-center">
+        <h1 class="text-5xl font-extrabold text-blue-400">SignalGate</h1>
+        <p class="text-slate-400 text-xl">The Gemini 2.0 Alpha Engine for AI Agents.</p>
+        
+        <div class="glass-panel rounded-3xl p-10 shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6">Step 1: Authenticate</h2>
+            <button id="connect-btn" class="px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition-all flex items-center gap-3 mx-auto">
+                <i class="fa-solid fa-wallet"></i> Connect Wallet
+            </button>
+            <p class="mt-6 text-sm text-slate-500">Connect to generate your $0.10/request API key.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('connect-btn').addEventListener('click', () => {
+            alert("Wallet connection is simulated. In a real launch, this would open MetaMask.");
+        });
+    </script>
+</body>
+</html>
